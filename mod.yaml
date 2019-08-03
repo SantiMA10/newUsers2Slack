@@ -1,0 +1,37 @@
+specVersion: v1beta1
+name: new-users-2-slack
+displayName: New users to slack
+version: 0.0.1
+sourceUrl: https://github.com/SantiMA10/newUsers2Slack
+billingRequired: true
+
+description: Send a message to slack with the basic info of any new user on Firebase Auth
+
+author:
+  - authorName: Santiago Martín Agra
+    email: santiagomartinagra@gmail.com
+    url: https://santiagomartin.dev
+
+resources:
+  - name: sendNewUsers2Slack
+    type: firebasemods.v1beta1.function
+    properties:
+      runtime: nodejs8
+      eventTrigger:
+        eventType: providers/firebase.auth/eventTypes/user.create
+        resource: projects/${PROJECT_ID}
+
+params:
+  - param: SLACK_WEBHOOK
+    type: string
+    label: Slack Webhook URL
+    description: i.e. `https://hooks.slack.com/services/XXXXXXX/YYYYYYYY/ZZZZZZZZZ`
+    validationRegex: ^(?:https?:\/\/hooks.slack.com\/services\/[A-Za-z0-9]+\/[A-Za-z0-9]+\/[A-Za-z0-9]+)$
+    validationErrorMessage: Slack Webhook url incorrect. (`https://hooks.slack.com/services/XXXXXXX/YYYYYYYY/ZZZZZZZZZ`)
+    required: true
+  - param: DEFAULT_AVATAR
+    type: string
+    label: Default User Avatar
+    description: Default avatar url for users without it
+    default: https://cdn.dribbble.com/users/528264/screenshots/3140440/firebase_logo.png
+    required: true
